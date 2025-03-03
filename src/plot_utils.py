@@ -24,24 +24,30 @@ def plot_aggregated_time_series(
         plotly.graph_objects.Figure: A Plotly figure object showing the time series plot.
     """
     # Extract the specific location's features and target
-    location_features = features[features["pickup_location_id" == row_id]]
-    actual_target = targets[targets["pickup_location_id" == row_id]]
+    # print(features)
+    print(targets)
+    location_features = features[features["pickup_location_id"] == row_id]
+    # actual_target = targets[targets["pickup_location_id"] == row_id]
+    actual_target = targets.loc[targets["pickup_location_id"] == row_id, "predicted_demand"]
 
     # Identify time series columns (e.g., historical ride counts)
     time_series_columns = [
         col for col in features.columns if col.startswith("rides_t-")
     ]
-    time_series_values = [location_features[col] for col in time_series_columns] + [
-        actual_target
-    ]
+    time_series_values = (
+        location_features[time_series_columns].values.flatten().tolist() + [actual_target]
+    )
 
     # Generate corresponding timestamps for the time series
+    # pickup_hour = location_features["pickup_hour"].values[0]  # Extract scalar value
+    pickup_hour = pd.to_datetime(location_features["pickup_hour"].values[0])
+
     time_series_dates = pd.date_range(
-        start=location_features["pickup_hour"]
-        - timedelta(hours=len(time_series_columns)),
-        end=location_features["pickup_hour"],
+        start=pickup_hour - timedelta(hours=len(time_series_columns) - 1),
+        periods=len(time_series_columns) + 1,
         freq="h",
     )
+
 
     # Create the plot title with relevant metadata
     title = f"Pickup Hour: {location_features['pickup_hour']}, Location ID: {location_features['pickup_location_id']}"
@@ -70,9 +76,7 @@ def plot_aggregated_time_series(
     if predictions is not None:
         fig.add_scatter(
             x=time_series_dates[-1:],  # Last timestamp
-            y=predictions[
-                predictions["pickup_location_id" == row_id]
-            ],  # Predicted value
+            y=predictions[predictions["pickup_location_id"] == row_id]["predicted_demand"],  # Predicted value
             line_color="red",
             mode="markers",
             marker_symbol="x",
