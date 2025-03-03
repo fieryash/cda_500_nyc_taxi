@@ -1,5 +1,13 @@
 from datetime import datetime, timedelta, timezone
 
+from pipeline_utils import (
+    TemporalFeatureEngineer,
+    average_rides_last_4_weeks,  # Make sure this is correctly imported
+)
+
+import joblib
+from pipeline_utils import average_rides_last_4_weeks  # Ensure import
+
 import hopsworks
 import numpy as np
 import pandas as pd
@@ -8,7 +16,7 @@ from hsfs.feature_store import FeatureStore
 # import src.config as config
 import config as config
 from data_utils import transform_ts_data_info_features
-
+from fft import FFTFeatureEngineer
 
 def get_hopsworks_project() -> hopsworks.project.Project:
     return hopsworks.login(
@@ -77,6 +85,9 @@ def load_model_from_registry(version=None):
     models = model_registry.get_models(name=config.MODEL_NAME)
     model = max(models, key=lambda model: model.version)
     model_dir = model.download()
+
+    print(average_rides_last_4_weeks)  # This should not raise an error
+
     model = joblib.load(Path(model_dir) / "lgb_model.pkl")
 
     return model
