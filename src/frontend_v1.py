@@ -13,6 +13,7 @@ from inference import (
     load_model_from_registry,
 )
 from config import DATA_DIR
+import requests
 
 def load_shape_data_file(data_dir, url="https://d37ci6vzurychx.cloudfront.net/misc/taxi_zones.zip"):
     """Downloads and loads the NYC taxi zones shapefile."""
