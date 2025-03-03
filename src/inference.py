@@ -16,7 +16,6 @@ from hsfs.feature_store import FeatureStore
 # import src.config as config
 import config as config
 from data_utils import transform_ts_data_info_features
-from fft import FFTFeatureEngineer
 
 def get_hopsworks_project() -> hopsworks.project.Project:
     return hopsworks.login(
