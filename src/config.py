@@ -34,7 +34,7 @@ FEATURE_VIEW_NAME = "time_series_hourly_feature_view"
 FEATURE_VIEW_VERSION = 1
 
 
-MODEL_NAME = "taxi_demand_predictor_next_hour"
+MODEL_NAME = "taxi_demand_predictor_next_hour_tuned"
 MODEL_VERSION = 1
 
 FEATURE_GROUP_MODEL_PREDICTION = "taxi_hourly_model_prediction"
