@@ -52,25 +52,14 @@ add_temporal_features = TemporalFeatureEngineer()
 
 # Function to return the pipeline
 def get_pipeline(**hyper_params):
-    """
-    Returns a pipeline with optional parameters for LGBMRegressor.
-
-    Parameters:
-    ----------
-    **hyper_params : dict
-        Optional parameters to pass to the LGBMRegressor.
-
-    Returns:
-    -------
-    pipeline : sklearn.pipeline.Pipeline
-        A pipeline with feature engineering and LGBMRegressor.
-    """
     pipeline = make_pipeline(
         add_feature_average_rides_last_4_weeks,
         add_temporal_features,
-        lgb.LGBMRegressor(**hyper_params),  # Pass optional parameters here
+        FFTFeatureEngineer(window_size=24, top_k=5, drop_original=False),
+        lgb.LGBMRegressor(**hyper_params)
     )
     return pipeline
+
 
 
 from sklearn.base import BaseEstimator, TransformerMixin
