@@ -18,3 +18,5 @@ seaborn
 streamlit
 streamlit-folium
 xgboost
+statsmodels
+prophet
