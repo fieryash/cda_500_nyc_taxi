@@ -111,7 +111,12 @@ def main():
         predictions["pickup_location_id"] = features["pickup_location_id"]
 
     predictions["pickup_location_id"] = features["pickup_location_id"]
-    fig = plot_aggregated_time_series(features, predictions, row_id=selected_location_id)
+    fig = plot_aggregated_time_series(
+        features=features,
+        targets=predictions,
+        row_id=selected_location_id,
+        predictions=predictions
+    )
     st.plotly_chart(fig, use_container_width=True)
     
     st.subheader("Top 10 Pickup Locations")

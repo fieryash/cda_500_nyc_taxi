@@ -1,12 +1,12 @@
 from datetime import datetime, timedelta, timezone
 
-from pipeline_utils import (
+from src.pipeline_utils import (
     TemporalFeatureEngineer,
     average_rides_last_4_weeks,  # Make sure this is correctly imported
 )
 
 import joblib
-from pipeline_utils import average_rides_last_4_weeks  # Ensure import
+from src.pipeline_utils import average_rides_last_4_weeks  # Ensure import
 
 import hopsworks
 import numpy as np
@@ -14,8 +14,8 @@ import pandas as pd
 from hsfs.feature_store import FeatureStore
 
 # import src.config as config
-import config as config
-from data_utils import transform_ts_data_info_features
+import src.config as config
+from src.data_utils import transform_ts_data_info_features
 
 def get_hopsworks_project() -> hopsworks.project.Project:
     return hopsworks.login(
@@ -73,7 +73,7 @@ def load_model_from_registry(version=None):
 
     import joblib
 
-    from pipeline_utils import (  # Import custom classes/functions
+    from src.pipeline_utils import (  # Import custom classes/functions
         TemporalFeatureEngineer,
         average_rides_last_4_weeks,
     )
